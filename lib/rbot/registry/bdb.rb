@@ -12,7 +12,7 @@ rescue Exception => e
 end
 
 if not defined? BDB
-  exit 2
+  fatal "A bdb module was found, but it doesn't seem to be one I know about, sorry"
 end
 
 module Irc
@@ -377,6 +377,7 @@ class Bot
       # debug "closing registry #{registry}"
       return if !@registry
       registry.close
+      @registry = nil
     end
 
     # convert value to string form for storing in the registry
@@ -408,7 +409,7 @@ class Bot
             return @recovery.call(val)
           rescue Exception => ee
             error _("marshal recovery failed, trying default")
-            debug ee
+            error ee
           end
         end
         return default
